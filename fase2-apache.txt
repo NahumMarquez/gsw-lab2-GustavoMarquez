@@ -1,0 +1,20 @@
+PREGUNTAS
+
+
+1. ¿Que diferencia hay entre sites-available y sites-enabled?
+En sites-available se guardan todas las configuraciones de los sitios,
+esten activos o no. En sites-enabled solo estan los sitios que Apache
+carga de verdad (son enlaces a los archivos de sites-available). Con
+a2ensite se activa un sitio y con a2dissite se desactiva sin borrar
+su configuracion.
+
+2. ¿Por que se ejecuta configtest antes de reload?
+Porque configtest revisa que la configuracion no tenga errores sin
+aplicar ningun cambio. Si se hace reload con un error, Apache puede
+dejar de funcionar y se caen todos los sitios del servidor, no solo
+el nuevo. Es una revision de seguridad antes de aplicar cambios.
+
+3. Reto: el HTML debe contener tu nombre y una imagen local.
+La pagina codigo/index.html muestra "Mi nombre: Gustavo" y la imagen
+local pastel.svg, servida desde /var/www/dulcehogar.local/.
+Evidencia: capturas/fase2-apache-sitio.png

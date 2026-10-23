@@ -1,0 +1,27 @@
+
+
+PREGUNTAS
+
+1. ¿Que hace ProxyPass /api http://IP_HOST:9090/api?
+Hace que Apache reenvie a Express todas las peticiones que empiezan
+con /api. Por ejemplo /api/saludo se envia a http://IP_HOST:9090/api/saludo
+y Apache le devuelve al cliente la respuesta de Express.
+
+2. ¿Por que localhost desde WSL2 no llega al Express en Windows?
+Porque WSL2 tiene su propia red. Dentro de Ubuntu, localhost es el mismo
+Ubuntu y no Windows. Por eso se usa la IP de Windows (172.22.0.1).
+
+3. Reto: ProxyPass sin /api final
+Respondio 404 "Cannot GET /saludo". Sin /api al final, Apache envia
+/saludo en lugar de /api/saludo, y esa ruta no existe en Express.
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Error</title>
+</head>
+<body>
+<pre>Cannot GET /saludo</pre>
+</body>
+</html>

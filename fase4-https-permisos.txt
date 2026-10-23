@@ -1,0 +1,26 @@
+
+PREGUNTAS
+
+1. ¿Por que certbot no funciona para dulcehogar.local?
+Porque Let's Encrypt solo da certificados a dominios publicos que
+puede verificar desde Internet. dulcehogar.local es un dominio local
+que solo existe en mi PC, asi que no se puede comprobar.
+
+2. ¿Que diferencia hay entre certificado autofirmado y uno de mkcert?
+El autofirmado se firma a si mismo y nadie lo reconoce, por eso el
+navegador muestra advertencia. mkcert crea una autoridad certificadora
+local que se instala como confiable en el equipo, y con ella firma el
+certificado, asi el navegador lo acepta sin advertencia (solo en esta PC).
+
+3. ¿Por que chmod 777 seria una mala practica?
+Porque cualquier usuario o programa podria modificar o borrar los
+archivos del sitio. Si alguien aprovecha una falla, podria cambiar la
+pagina o subir archivos peligrosos. Cada usuario debe tener solo los
+permisos que necesita.
+
+4. Reto: si el dominio fuera dulcehogar.com.sv publico
+- Herramienta: certbot (Let's Encrypt) en lugar de mkcert.
+- Puerto: 443 (HTTPS estandar) y 80 para la redireccion,
+  en lugar de 4443 y 8085.
+- DNS: crear un registro A que apunte dulcehogar.com.sv a la IP
+  publica del servidor, en lugar de usar el archivo hosts.

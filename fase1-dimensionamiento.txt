@@ -1,0 +1,68 @@
+LABORATORIO 2 - FASE 1: DIMENSIONAMIENTO
+Caso: "Dulce Hogar" - Reposteria Artesanal
+Estudiante: Gustavo Marquez
+Gestion de Servidores Web - Seccion C - UNIVO
+Servidor: Ubuntu (WSL2 en Windows) - 2 vCPU, 4 GB RAM, 40 GB SSD
+
+
+
+1. Peticiones por segundo (promedio y pico)
+
+Peticiones al dia = 500 visitas x 5 peticiones = 2,500 peticiones/dia
+Segundos en un dia = 24 x 60 x 60 = 86,400 s
+Promedio = 2,500 / 86,400 = 0.029 peticiones/segundo
+Pico real = 0.029 x 15 = 0.43 peticiones/segundo
+
+Dia festivo (3,000 visitas):
+3,000 x 5 = 15,000 peticiones/dia -> 15,000 / 86,400 = 0.17 req/s
+Pico festivo = 0.17 x 15 = 2.6 peticiones/segundo
+
+Justificacion: el factor 15 representa que las visitas no llegan
+repartidas en todo el dia, sino concentradas en pocas horas (por ejemplo
+cuando la gente busca pasteles por la tarde). Aun en el peor caso el
+servidor recibe menos de 3 peticiones por segundo.
+
+
+2. ¿Alcanzan 2 vCPU y 4 GB de RAM?
+
+
+Para el trafico diario si alcanzan con mucha holgura: 0.43 req/s es una
+carga minima; Apache y un contenedor Express pequeño pueden atender
+cientos de peticiones por segundo en ese hardware.
+Para el pico de 3,000 visitas (2.6 req/s) tambien alcanzan. En RAM,
+Ubuntu, Apache y Node juntos usan alrededor de 1 GB, dejando margen
+de sobra de los 4 GB. El limite real estaria en las imagenes pesadas
+del catalogo (red y disco), no en el CPU.
+
+
+3. Si el sitio responde lento, ¿que reviso primero?
+
+
+Revisaria primero la RAM (con "free -h" y "top"). Si la memoria se
+llena, el sistema empieza a usar swap en disco y todo se vuelve muy
+lento aunque el CPU este libre. Despues revisaria CPU (top), disco
+(df -h, por si los logs llenaron los 40 GB) y por ultimo la red.
+
+
+
+4. ¿Nube o servidor local para "Dulce Hogar"? -> Recomiendo NUBE
+
+
+- Costo: un servidor pequeño en la nube cuesta pocos dolares al mes;
+  un servidor local exige comprar equipo, UPS, internet con IP fija
+  y pagar la energia.
+- Escalabilidad: en dias festivos se puede subir CPU/RAM en minutos y
+  bajarlos despues; con un equipo local habria que comprar hardware.
+- Mantenimiento: el proveedor se encarga del hardware, la energia y la
+  conectividad; una reposteria pequeña no tiene personal de TI para
+  atender cortes de luz o fallas del equipo.
+
+
+5. Reto: si el sitio fuera solo HTML/CSS estatico, ¿baja el CPU?
+
+
+Si. Con contenido estatico Apache solo lee el archivo del disco y lo
+envia tal cual, sin ejecutar codigo. Con Express, cada peticion ejecuta
+JavaScript, lee productos.json y arma la respuesta JSON, lo que consume
+mas CPU. En la Clase 15 se comprobo: 300 peticiones a paginas estaticas
+en IIS casi no movieron el uso de CPU.
